@@ -1,0 +1,6 @@
+framework module WaterfallGrid {
+  umbrella header "WaterfallGrid-umbrella.h"
+
+  export *
+  module * { export * }
+}
