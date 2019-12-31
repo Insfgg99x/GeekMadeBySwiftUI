@@ -6,6 +6,5 @@ target 'GeekMadeBySwiftUI' do
   pod 'Kingfisher'
   pod 'WaterfallGrid'
   pod 'Moya/RxSwift'
-  pod 'RxCocoa'
   
 end

@@ -9,7 +9,6 @@
 import Foundation
 import Moya
 import RxSwift
-import RxCocoa
 
 public enum NetworkkResult<T> {
     case success(T)
