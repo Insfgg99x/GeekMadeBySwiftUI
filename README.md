@@ -71,23 +71,24 @@ var body: some View {
 }
 ```
 
-- Mac截图
-![](/ScreenShots/Mac/1.png)
+### Mac截图
 
-![](/ScreenShots/Mac/2.png)
+![Category](/ScreenShots/Mac/1.png)
 
-![](/ScreenShots/Mac/3.png)
+![Today](/ScreenShots/Mac/2.png)
 
-![](/ScreenShots/Mac/4.png)
+![Favorites](/ScreenShots/Mac/3.png)
 
-- iPhone截图
+![Detail](/ScreenShots/Mac/4.png)
 
-![](/ScreenShots/iPhone/1.png)
+### iPhone截图
 
-![](/ScreenShots/iPhone/2.png)
+![Category](/ScreenShots/iPhone/1.png)
 
-![](/ScreenShots/iPhone/3.png)
+![Today](/ScreenShots/iPhone/2.png)
 
-![](/ScreenShots/iPhone/4.png)
+![Grid](/ScreenShots/iPhone/3.png)
 
-![](/ScreenShots/iPhone/5.png)
+![Me](/ScreenShots/iPhone/4.png)
+
+![Detail](/ScreenShots/iPhone/5.png)
