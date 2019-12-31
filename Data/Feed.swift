@@ -51,6 +51,23 @@ extension Feed {
     }
 }
 
+extension Favorites {
+    func feed() -> Feed {
+        var f = Feed.init()
+        f._id = id
+        f.createdAt = createdAt
+        f.desc = desc
+        f.publishedAt = publishedAt
+        f.source = source
+        f.type = type
+        f.url = url
+        f.used = used
+        f.who = who
+        f.images = images?.array() as? [String]
+        return f
+    }
+}
+
 let defaultFeed : Feed = decode([
     "_id": "5cd527ed9d212239df927aa2",
     "createdAt": "2019-05-10T07:27:41.223Z",

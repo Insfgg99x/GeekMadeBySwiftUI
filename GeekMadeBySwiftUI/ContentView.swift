@@ -22,7 +22,8 @@ struct ContentView: View {
                 }
             .tag(0)
             
-            CategoryContainer().environmentObject(CategoryVM())
+            CategoryContainer()
+                .environmentObject(CategoryVM())
                 .tabItem {
                     Image("tab_category")
                         .renderingMode(.template)
@@ -31,6 +32,7 @@ struct ContentView: View {
             .tag(1)
             
             MineContainer()
+                .environmentObject(MineVM())
                 .tabItem {
                     Image("tab_me")
                         .renderingMode(.template)

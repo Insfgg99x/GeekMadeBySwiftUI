@@ -35,6 +35,14 @@ public extension String {
         let json = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [[String : Any]]
         return json
     }
+    
+    func array() -> [Any]? {
+        guard let data = self.data(using: .utf8) else {
+            return nil
+        }
+        let json = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [Any]
+        return json
+    }
 }
 
 public extension Array {

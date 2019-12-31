@@ -1,5 +1,5 @@
 //
-//  Copyright © 2019 Paolo Leonardi. All rights reserved.
+//  Copyright © 2019 xgf. All rights reserved.
 //
 
 import SwiftUI

@@ -1,3 +1,4 @@
+
 //
 //  MineFavorite.swift
 //  GeekMadeBySwiftUI
@@ -9,8 +10,37 @@
 import SwiftUI
 
 struct MineFavorite: View {
+    @EnvironmentObject var vm : MineVM
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List {
+            ForEach((0..<vm.data.count), id : \.self) { index in
+                Section(header:
+                    VStack(alignment: .leading) {
+                        Text(self.vm.data[index].category)
+                        .font(.headline)
+                        .bold()
+                        .frame(height : 25)
+                        .padding(.leading, 15)
+                        .offset(x: 0, y: 5)
+                        Divider()
+                    }
+                    .background(Color.white)
+                ) {
+                    ForEach(self.vm.data[index].feeds) { feed in
+                        NavigationLink(destination: FeedDetail(feed: feed)) {
+                            FeedView(feed: feed)
+                        }
+                        .padding(.trailing, -16)//hide accosryView(arrow)
+                    }
+                }
+            }
+            .listRowInsets(EdgeInsets())
+        }
+        .navigationBarTitle("Favorites", displayMode: .inline)
+        .onAppear {
+            self.vm.loadData()
+        }
     }
 }
 

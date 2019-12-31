@@ -10,9 +10,32 @@ import SwiftUI
 
 struct FeedDetail: View {
     var feed : Feed
+    @State var isFavorite : Bool = false
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        WebView(redirect: feed.url)
+            .navigationBarTitle("Detail", displayMode: .inline)
+            .navigationBarItems(trailing: Button(action: {
+                if DBManager.shared.entityWithId(self.feed._id) != nil {
+                    DBManager.shared.deleteById(self.feed.id)
+                } else {
+                    DBManager.shared.insert(feed: self.feed)
+                }
+                DBManager.shared.save()
+                self.isFavorite = DBManager.shared.entityWithId(self.feed._id) != nil
+            }) {
+                if self.isFavorite {
+                    Image(systemName: "star.fill")
+                    .foregroundColor(.yellow)
+                } else {
+                    Image(systemName: "star")
+                    .foregroundColor(.gray)
+                }
+            })
+            .padding()
+            .onAppear {
+                self.isFavorite = DBManager.shared.entityWithId(self.feed._id) != nil
+            }
     }
 }
 
@@ -21,3 +44,5 @@ struct FeedDetail_Previews: PreviewProvider {
         FeedDetail(feed: defaultFeed)
     }
 }
+
+

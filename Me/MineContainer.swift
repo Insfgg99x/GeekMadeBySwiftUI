@@ -1,33 +1,56 @@
 
 
 //
-//  Copyright © 2019 Paolo Leonardi. All rights reserved.
+//  Copyright © 2019 xgf. All rights reserved.
 //
 
 import SwiftUI
 
 struct MineContainer: View {
+    @EnvironmentObject var vm : MineVM
+    
     var body: some View {
-            NavigationView {
-                List {
-                    Section {
+        NavigationView {
+            List {
+                Section {
+                    NavigationLink(destination: MineFavorite()
+                        .environmentObject(vm)) {
                         Text("我的收藏")
                     }
-                    Section {
+                }
+                Section {
+                    HStack {
                         Text("清除缓存")
+                        Spacer()
+                        Text(vm.cacheSize)
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
                     }
-                    Section {
-                        Text("意见反馈")
-                        Text("点个赞")
-                        Text("版本")
-                    }
-                    Section {
-                        Text("推荐给好友")
+                    .onTapGesture {
+                        self.vm.clearCache()
                     }
                 }
-                .listStyle(GroupedListStyle())
-                .listRowInsets(EdgeInsets())
-                .navigationBarTitle("Me", displayMode: .inline)
+                Section {
+                    Text("意见反馈")
+                    Text("点个赞")
+                    HStack {
+                        Text("版本")
+                        Spacer()
+                        Text(vm.appVer())
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                }
+                Section {
+                    Text("推荐给好友")
+                }
+            }
+            .listStyle(GroupedListStyle())
+            .listRowInsets(EdgeInsets())
+            .navigationBarTitle("Me", displayMode: .inline)
+        }
+        .onAppear {
+            self.vm.loadCacheSize()
         }
     }
 }
