@@ -1,5 +1,5 @@
 //
-//  HomeNetwork.swift
+//  Network.swift
 //  GeekMadeBySwiftUI
 //
 //  Created by xgf on 2019/12/30.
@@ -16,16 +16,22 @@ public enum NetworkkResult<T> {
     case error(Error)
 }
 
-struct HomeNetwork {
+struct Network {
     enum HomeApi : TargetType {
         case today
+        case category(_ type : Feed.FeedType)
         
         var baseURL: URL {
             return host
         }
         
         var path: String {
-            return "today"
+            switch self {
+            case .today:
+                return "today"
+            case .category(let type):
+                return "data/\(type.rawValue)/20/1"
+            }
         }
         
         var method: Moya.Method {
@@ -48,9 +54,15 @@ struct HomeNetwork {
     private let provider = MoyaProvider<HomeApi>()
 }
 
-extension HomeNetwork {
+extension Network {
     func loadHomeData() -> Single<[String : Any]> {
         return provider.rx.request(.today).mapJSON().flatMap {
+            return .just($0 as! [String : Any])
+        }
+    }
+    
+    func loadCategoryData(_ type : Feed.FeedType) -> Single<[String : Any]> {
+        return provider.rx.request(.category(type)).mapJSON().flatMap {
             return .just($0 as! [String : Any])
         }
     }

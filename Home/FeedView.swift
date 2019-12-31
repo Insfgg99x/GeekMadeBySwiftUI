@@ -1,39 +1,19 @@
 //
-//  FeedContainer.swift
+//  FeedView.swift
 //  GeekMadeBySwiftUI
 //
-//  Created by xgf on 2019/12/30.
+//  Created by xgf on 2019/12/31.
 //  Copyright © 2019 xgf. All rights reserved.
 //
 
 import SwiftUI
-
-struct FeedContainer: View {
-    var data : HomeData
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text(data.category).font(.title)
-            Divider()
-            ForEach(data.feeds) { feed in
-                FeedView(feed: feed)
-            }
-        }
-    }
-}
-
-struct FeedContainer_Previews: PreviewProvider {
-    static var previews: some View {
-        FeedContainer(data : defaultFeedData)
-    }
-}
-
 
 struct FeedView : View {
     var feed : Feed
     var body : some View {
         VStack(alignment: .leading) {
             Text(feed.desc ?? "")
+                .font(.subheadline)
             if (feed.images?.count ?? 0) > 0 {
                 HStack {
                     ForEach(feed.images!, id: \.self) { img in
@@ -44,13 +24,25 @@ struct FeedView : View {
                             
                     }
                 }
+            } else {
+                Spacer()
             }
             HStack {
-                Text(feed.who ?? "").font(.subheadline)
+                Text(feed.who ?? "")
+                    .padding(.all, 2)
+                    .font(.subheadline)
+                    .foregroundColor(.white)
+                    .background(Color.init(red: Double(0x16) / 255.0,
+                                           green: Double(0x98) / 255.0,
+                                           blue: Double(0xaf) / 255.0))
+                    .cornerRadius(2)
                 Spacer()
-                Text(feed.time ?? "").font(.subheadline).foregroundColor(.gray)
+                Text(feed.time ?? "")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
             }
         }
+        .padding(.all, 15)
     }
 }
 
@@ -59,4 +51,3 @@ struct FeedView_Previews : PreviewProvider {
         FeedView(feed: defaultFeed)
     }
 }
-

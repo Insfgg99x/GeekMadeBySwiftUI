@@ -18,11 +18,11 @@ struct ContentView: View {
                 .tabItem {
                     Image("tab_home")
                         .renderingMode(.template)
-                    Text("Home")
+                    Text("Today")
                 }
             .tag(0)
             
-            CategoryContainer()
+            CategoryContainer().environmentObject(CategoryVM())
                 .tabItem {
                     Image("tab_category")
                         .renderingMode(.template)

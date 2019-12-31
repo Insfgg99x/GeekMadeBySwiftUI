@@ -20,7 +20,7 @@ struct Feed : Hashable, Codable {
     var who: String?
     var images : [String]?
     
-    enum FeedType: String {
+    enum FeedType: String, CaseIterable {
         case ios = "iOS"
         case web =  "前端"
         case android = "Android"
