@@ -3,17 +3,18 @@
 //
 
 import SwiftUI
+import SwiftUIRefresh
 
 struct HomeContainer: View {
     @EnvironmentObject var vm : HomeVM
+    @State var isRefreshing = false
     
     var body: some View {
         NavigationView {
             List {
                 PageView(vm.banners.map { KFImage(URL(string: $0)) })
-                    .scaledToFill()
-                    .frame(height: sw * 0.6)
-                    .clipped()
+                    .scaledToFit()
+                    .frame(width: sw)
                     .listRowInsets(EdgeInsets())
                 ForEach((0..<vm.data.count), id : \.self) { index in
                     Section(header:
@@ -38,6 +39,11 @@ struct HomeContainer: View {
                 }
                 .listRowInsets(EdgeInsets())
             }
+            .background(PullToRefresh(action: {
+                self.vm.loadData {
+                    self.isRefreshing = false
+                }
+            }, isShowing: $isRefreshing))
             .navigationBarTitle("Today", displayMode: .inline)
         }
     }

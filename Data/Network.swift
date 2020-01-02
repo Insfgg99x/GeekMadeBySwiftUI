@@ -18,7 +18,7 @@ public enum NetworkkResult<T> {
 struct Network {
     enum HomeApi : TargetType {
         case today
-        case category(_ type : Feed.FeedType)
+        case category(_ type : Feed.FeedType, _ page : Int = 1)
         
         var baseURL: URL {
             return host
@@ -28,8 +28,8 @@ struct Network {
             switch self {
             case .today:
                 return "today"
-            case .category(let type):
-                return "data/\(type.rawValue)/20/1"
+            case .category(let type, let page):
+                return "data/\(type.rawValue)/30/\(page)"
             }
         }
         
@@ -55,14 +55,22 @@ struct Network {
 
 extension Network {
     func loadHomeData() -> Single<[String : Any]> {
-        return provider.rx.request(.today).mapJSON().flatMap {
-            return .just($0 as! [String : Any])
-        }
+        return provider
+            .rx
+            .request(.today)
+            .mapJSON()
+            .flatMap {
+                return .just($0 as! [String : Any])
+            }
     }
     
-    func loadCategoryData(_ type : Feed.FeedType) -> Single<[String : Any]> {
-        return provider.rx.request(.category(type)).mapJSON().flatMap {
-            return .just($0 as! [String : Any])
-        }
+    func loadCategoryData(_ type : Feed.FeedType, _ page : Int = 1) -> Single<[String : Any]> {
+        return provider
+            .rx
+            .request(.category(type, page))
+            .mapJSON()
+            .flatMap {
+                return .just($0 as! [String : Any])
+            }
     }
 }

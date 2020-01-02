@@ -25,18 +25,29 @@ final class CategoryVM : ObservableObject {
         loadData()
     }
     
-    func loadData() {
+    func loadData(page : Int = 1, _ end : ((_ canLoadMore: Bool) -> ())? = nil) {
         network
-            .loadCategoryData(type)
+            .loadCategoryData(type, page)
             .subscribeOn(MainScheduler.instance)
             .subscribe(onSuccess: { json in
                 let results = json["results"] as? [[String : Any]]
-                self.feeds = decode(results ?? []) ?? []
-                if self.type == .welfare {
-                    self.imgs = self.feeds.map { $0.url ?? "" }
+                end?((results?.count ?? 0 > 0))
+                let array : [Feed] = decode(results ?? []) ?? []
+                if page == 1 {
+                    self.feeds = array
+                    if self.type == .welfare {
+                        self.imgs = array.map { $0.url ?? "" }
+                    }
+                } else {
+                    self.feeds.append(contentsOf: array)
+                    if self.type == .welfare {
+                        self.imgs.append(contentsOf: array.map { $0.url ?? "" })
+                    }
                 }
             }, onError: { error in
                 print(error.localizedDescription)
+                end?(true)
             })
+            .disposed(by: bag)
     }
 }

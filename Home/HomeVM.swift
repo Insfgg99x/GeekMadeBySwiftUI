@@ -26,11 +26,12 @@ final class HomeVM : ObservableObject {
         loadData()
     }
     
-    private func loadData() {
+    func loadData(_ end : (() -> ())? = nil) {
         network
             .loadHomeData()
             .subscribeOn(MainScheduler.instance)
             .subscribe(onSuccess: { json in
+                end?()
                 let feeds = (json["results"] as? [String : [[String : Any]]] ?? [:]).sorted(by: { (kv1, kv2) -> Bool in
                     let key1 = kv1.key as String
                     let key2 = kv2.key as String
@@ -51,6 +52,7 @@ final class HomeVM : ObservableObject {
                 self.data = dataArray
             }, onError: { error in
                 print(error.localizedDescription)
+                end?()
             })
             .disposed(by: bag)
     }

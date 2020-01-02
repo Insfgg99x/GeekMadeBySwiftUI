@@ -23,7 +23,6 @@ struct PageView<T : View>: View {
             PageControl(numberOfPages: controllers.count,
                         currentPage: $currentPage)
                 .padding(.trailing)
-                .padding(.bottom)
         }
     }
 }

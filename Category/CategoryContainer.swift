@@ -4,9 +4,13 @@
 //
 
 import SwiftUI
+import SwiftUIRefresh
 
 struct CategoryContainer: View {
     @EnvironmentObject var vm : CategoryVM
+    @State var isRefreshing = false
+    @State private var page = 1
+    @State private var shouldLoadMore = true
     
     var body: some View {
         NavigationView {
@@ -32,10 +36,36 @@ struct CategoryContainer: View {
                             FeedView(feed: feed)
                         }
                     }
+                    .background(PullToRefresh(action: {
+                        self.page = 1
+                        self.vm.loadData { _ in
+                            self.isRefreshing = false
+                        }
+                    }, isShowing: $isRefreshing))
                     .listRowInsets(EdgeInsets())
+                }
+                ZStack {
+                    Rectangle()
+                        .foregroundColor(.init(white: 0.96))
+                        .frame(height : 40)
+                    Button(action: loadMore) {
+                        Text(shouldLoadMore ? "Load More" : "No More Data")
+                            .frame(height : 40)
+                            .foregroundColor(shouldLoadMore ? .blue : .gray)
+                    }
                 }
             }
             .navigationBarTitle("Category", displayMode: .inline)
+        }
+    }
+    
+    private func loadMore() {
+        guard shouldLoadMore else {
+            return
+        }
+        page += 1
+        vm.loadData(page: page) {
+            self.shouldLoadMore = $0
         }
     }
 }

@@ -11,12 +11,20 @@ import WaterfallGrid
 
 struct ImageContainer: View {
     @EnvironmentObject var vm : CategoryVM
+    @State var showBigImage = false
     
     var body: some View {
-        WaterfallGrid(vm.imgs, id: \.self) { img in
-            KFImage(URL(string: img))
+        WaterfallGrid(0 ..< vm.imgs.count, id: \.self) { index in
+            KFImage(URL(string: self.vm.imgs[index]))
                 .resizable()
+                .scaledToFit()
                 .aspectRatio(contentMode: .fit)
+                .onTapGesture {
+                    self.showBigImage.toggle()
+                }
+                .sheet(isPresented: self.$showBigImage) {
+                    KFImage(URL(string: self.vm.imgs[index]))
+                }
         }
         .gridStyle(columns: 2,
                    spacing: 10,
