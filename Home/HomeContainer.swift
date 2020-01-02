@@ -12,10 +12,13 @@ struct HomeContainer: View {
     var body: some View {
         NavigationView {
             List {
-                PageView(vm.banners.map { KFImage(URL(string: $0)) })
-                    .scaledToFit()
-                    .frame(width: sw)
-                    .listRowInsets(EdgeInsets())
+                PageView(vm.banners.map {
+                    KFImage(URL(string: $0))
+                        .resizable()
+                        .scaledToFill()
+                })
+                .frame(height : sw)
+                .listRowInsets(EdgeInsets())
                 ForEach((0..<vm.data.count), id : \.self) { index in
                     Section(header:
                         VStack(alignment: .leading) {
