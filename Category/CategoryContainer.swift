@@ -44,15 +44,10 @@ struct CategoryContainer: View {
                     }, isShowing: $isRefreshing))
                     .listRowInsets(EdgeInsets())
                 }
-                ZStack {
-                    Rectangle()
-                        .foregroundColor(.init(white: 0.96))
+                Button(action: loadMore) {
+                    Text(shouldLoadMore ? "Load More" : "No More Data")
                         .frame(height : 40)
-                    Button(action: loadMore) {
-                        Text(shouldLoadMore ? "Load More" : "No More Data")
-                            .frame(height : 40)
-                            .foregroundColor(shouldLoadMore ? .blue : .gray)
-                    }
+                        .foregroundColor(shouldLoadMore ? .blue : .gray)
                 }
             }
             .navigationBarTitle("Category", displayMode: .inline)
