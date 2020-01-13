@@ -8,6 +8,7 @@
 
 import Foundation
 import RxSwift
+import Photos
 
 final class CategoryVM : ObservableObject {
     @Published var feeds = [defaultFeed]
@@ -49,5 +50,29 @@ final class CategoryVM : ObservableObject {
                 end?(true)
             })
             .disposed(by: bag)
+    }
+}
+
+
+extension CategoryVM {
+    func save(_ img : String) {
+        guard let url = URL.init(string: img) else {
+            return
+        }
+        PHPhotoLibrary.requestAuthorization { status in
+            guard status == .authorized else {
+                return
+            }
+            PHPhotoLibrary.shared().performChanges({
+                guard let data = try? Data.init(contentsOf: url) else {
+                    return
+                }
+                PHAssetCreationRequest.forAsset().addResource(with: .photo, data: data, options: nil)
+            }, completionHandler: { (ret, error) in
+                if ret {
+                    print("Saved success!")
+                }
+            })
+        }
     }
 }

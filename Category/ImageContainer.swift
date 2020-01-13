@@ -8,6 +8,7 @@
 
 import SwiftUI
 import WaterfallGrid
+import Photos
 
 struct ImageContainer: View {
     @EnvironmentObject var vm : CategoryVM
@@ -15,16 +16,25 @@ struct ImageContainer: View {
     
     var body: some View {
         WaterfallGrid(0 ..< vm.imgs.count, id: \.self) { index in
-            KFImage(URL(string: self.vm.imgs[index]))
+            NavigationLink(destination: KFImage(URL(string: self.vm.imgs[index]))
                 .resizable()
-                .scaledToFit()
-                .aspectRatio(contentMode: .fit)
-                .onTapGesture {
+                .scaledToFill()
+                .onLongPressGesture {
                     self.showBigImage.toggle()
                 }
-                .sheet(isPresented: self.$showBigImage) {
-                    KFImage(URL(string: self.vm.imgs[index]))
-                }
+                .alert(isPresented: self.$showBigImage) {
+                    Alert(title: Text("Save to photolibrary"),
+                          primaryButton: Alert.Button.default(Text("Save"), action: {
+                            self.vm.save(self.vm.imgs[index])
+                          }),
+                          secondaryButton: Alert.Button.cancel())
+                }) {
+                KFImage(URL(string: self.vm.imgs[index]))
+                    .renderingMode(.original)
+                    .resizable()
+                    .scaledToFit()
+                    
+            }
         }
         .gridStyle(columns: 2,
                    spacing: 10,
